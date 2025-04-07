@@ -1,0 +1,70 @@
+services:
+
+  fe_socialnetwork:
+    image: fe_socialnetwork
+    build:
+      context: fe_socialnetwork
+      dockerfile: Dockerfile
+    container_name: fe_socialnetwork
+    restart: always
+    depends_on:
+      - be_socialnetwork
+    networks:
+      - app-network
+    ports:
+      - "3000:3000"
+
+  be_socialnetwork:
+    image: be_socialnetwork
+    build:
+      context: socialnetwork
+      dockerfile: Dockerfile
+    container_name: be_socialnetwork
+    environment:
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: hoainam10th
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql_db:3306/socialnetwork
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      APP_JWT_SECRET: 1ff25812f22ccb139353d2578cc118ec52dca0ae8ec52ff9c4d94b06f4fb7d60
+      APP_JWT_EXPIRATION_MILLISECONDS: 604800000
+    restart: always
+    depends_on:
+      - mysql_db
+    networks:
+      - app-network
+    ports:
+      - "8080:8080"
+  mysql_db:
+    image: mysql:8.0.40
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: hoainam10th
+      MYSQL_DATABASE: socialnetwork
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+
+  portainer:
+    image: portainer/portainer-ce
+    container_name: portainer
+    restart: always
+    ports:
+      - "8000:8000"
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
+volumes:
+  mysql_data:
+  portainer_data:
+
+
+networks:
+  app-network:
+    driver: bridge

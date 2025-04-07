@@ -19,7 +19,8 @@ const authOptions: NextAuthOptions = {
         };
 
         try {
-          const res = await fetch(`${process.env.NEXTAUTH_URL_INTERNAL}account/login`, {
+          console.log("BACKEND_URL: ", process.env.BACKEND_URL)
+          const res = await fetch(`${process.env.BACKEND_URL}account/login`, {
             method: 'POST',
             body: JSON.stringify(credentialDetails),
             headers: { "Content-Type": "application/json" }
@@ -37,15 +38,18 @@ const authOptions: NextAuthOptions = {
       }
     })
   ],
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: 'lJq3+zU1TxJnlpS9qf3GvtnUKRtGZCJ9RYE/NXVswI8=',
   callbacks: {
     jwt: async ({ user, token }) => {
+      console.log("user", user)
+      console.log("jwt token: ", token)
       if (user) {
         token.user = user as any;
       }
       return token
     },
     session: async ({ session, token }) => {
+      console.log("session token: ", token)
       if (session) {
         session.user = token.user as any;
       }
