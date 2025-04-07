@@ -14,8 +14,6 @@ Database: MySQl.
   <li>Realtime comment</li>
 </ol>
 
+![hinh1](https://github.com/user-attachments/assets/bbbee922-7496-4f0e-8178-ed076bb04986)
 
-
-
-
-
+![hinh2](https://github.com/user-attachments/assets/28582a72-7928-4073-9b2b-8428074bcceb)
